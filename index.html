@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10243B">
+<title>Kiểm công thức phối trộn</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Kiểm CT">
+<meta name="description" content="Kiểm tra công thức phối trộn theo công thức chuẩn">
+<style>
+:root{
+  --ink:#10243B; --ink2:#3A4C61; --ink3:#7488A0;
+  --paper:#F1F4F7; --card:#fff; --rule:#D8DEE7; --rule2:#EBEFF4;
+  --pen:#14468F; --seal:#B3261E; --mark:#D97800; --ok:#15803D;
+  --okbg:#E9F5EC; --wabg:#FDF3E2; --erbg:#FBEAE8;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 var(--sans)}
+h1,h2{font-family:var(--serif);margin:0;font-weight:700}
+[hidden]{display:none!important}
+.top{background:var(--ink);color:#fff;position:sticky;top:0;z-index:30;border-bottom:3px solid var(--mark)}
+.topin{max-width:1080px;margin:auto;padding:9px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.bd{font-family:var(--serif);font-size:15px;letter-spacing:.07em;text-transform:uppercase}
+.tabs{display:flex;gap:2px;margin-left:auto}
+.tb{background:none;border:0;color:#B9C7D6;font:inherit;font-size:13px;padding:7px 12px;border-radius:3px 3px 0 0;cursor:pointer}
+.tb[aria-selected=true]{background:var(--paper);color:var(--ink);font-weight:600}
+.iob{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#E4EBF2;font:inherit;font-size:12px;padding:5px 10px;border-radius:3px;cursor:pointer}
+main{max-width:1080px;margin:auto;padding:16px 12px 80px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:5px;margin-bottom:14px;overflow:hidden}
+.ch{padding:10px 14px;border-bottom:1px solid var(--rule);background:#FAFCFD;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ch h2{font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.ch .sub{font-size:12px;color:var(--ink3);margin-left:auto}
+.cb{padding:14px}
+.grid{display:grid;gap:10px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+label.f{display:block}
+label.f>span{display:block;font-size:11px;color:var(--ink2);margin-bottom:3px;font-weight:600}
+input,select{width:100%;font:inherit;padding:8px 9px;border:1px solid var(--rule);border-radius:4px;background:#fff;color:var(--ink)}
+input.n{font-family:var(--mono);text-align:right}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--pen);outline-offset:1px}
+input:read-only{background:#F2F5F9;color:var(--ink2)}
+.btn{font:inherit;font-size:13px;padding:9px 15px;border-radius:4px;border:1px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+.btn.g{background:#fff;color:var(--ink)}
+.btn.o{background:var(--mark);border-color:var(--mark);color:#fff}
+.btn.d{background:#fff;border-color:var(--seal);color:var(--seal)}
+.btn.s{font-size:12px;padding:6px 11px}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse}
+th{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink2);text-align:left;padding:7px;border-bottom:2px solid var(--ink);white-space:nowrap}
+td{padding:6px 7px;border-bottom:1px solid var(--rule2)}
+td.n,th.n{text-align:right}
+td.n{font-family:var(--mono)}
+td input{padding:6px 7px;font-size:13px}
+.chip{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;white-space:nowrap}
+.cok{background:var(--okbg);color:var(--ok)}
+.cwa{background:var(--wabg);color:#8A5200}
+.cer{background:var(--erbg);color:var(--seal)}
+.lots{background:#F7FAFC;border:1px solid var(--rule);border-left:3px solid var(--pen);border-radius:4px;padding:10px;margin-top:8px}
+.lot{display:grid;grid-template-columns:1fr 78px 88px 88px 30px;gap:6px;align-items:end;margin-bottom:7px}
+.lot .x{background:#fff;border:1px solid var(--rule);color:var(--seal);border-radius:4px;height:34px;cursor:pointer;font:inherit}
+.lf{display:flex;gap:12px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--ink2);border-top:1px dashed var(--rule);padding-top:8px}
+.lf b{font-family:var(--mono);color:var(--ink)}
+.vd{display:flex;gap:14px;align-items:center;padding:16px;border:2px solid;border-radius:5px;flex-wrap:wrap}
+.vd .b{font-family:var(--serif);font-size:24px;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.vok{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.vwa{background:var(--wabg);border-color:var(--mark);color:#8A5200}
+.ver{background:var(--erbg);border-color:var(--seal);color:var(--seal)}
+.band{position:relative;height:18px;min-width:92px}
+.band i{position:absolute;left:0;right:0;top:8px;height:2px;background:var(--rule)}
+.band u{position:absolute;top:3px;height:12px;background:#DCEBE1;border-left:1px solid var(--ok);border-right:1px solid var(--ok)}
+.band b{position:absolute;top:0;width:3px;height:18px;border-radius:1px;background:var(--mark);box-shadow:0 0 0 1px #fff}
+.band b.in{background:var(--ok)} .band b.out{background:var(--seal)}
+.note{font-size:12px;color:var(--ink2);background:#F7FAFC;border-left:3px solid var(--rule);padding:9px 11px;border-radius:0 4px 4px 0}
+.note.w{border-left-color:var(--mark);background:var(--wabg);color:#7A4A00}
+.note.e{border-left-color:var(--seal);background:var(--erbg);color:var(--seal)}
+.empty{text-align:center;padding:32px 16px;color:var(--ink3)}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:4px;font-size:13px;z-index:60;max-width:90%}
+.hi{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px 11px;border:1px solid var(--rule);border-radius:4px;margin-bottom:6px;flex-wrap:wrap}
+.sl{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin-top:10px}
+.sl b{font-family:var(--mono);color:var(--ink)}
+@media(max-width:700px){
+  .g2,.g3{grid-template-columns:1fr}
+  .lot{grid-template-columns:1fr 1fr;gap:6px}
+  .lot .x{grid-column:2;justify-self:end;width:56px}
+  .tw table{min-width:580px}
+}
+</style>
+</head>
+<body>
+<div class="top"><div class="topin">
+  <div class="bd">Kiểm công thức</div>
+  <div class="tabs">
+    <button class="tb" id="t1" onclick="go(1)">Công thức chuẩn</button>
+    <button class="tb" id="t2" aria-selected="true" onclick="go(2)">Kiểm tra</button>
+  </div>
+  <button class="iob" onclick="expJSON()">Xuất</button>
+  <button class="iob" onclick="document.getElementById('fi').click()">Nạp</button>
+  <input type="file" id="fi" accept=".json" hidden onchange="impJSON(this)">
+</div></div>
+<main>
+<section id="s1" hidden>
+  <div class="card"><div class="cb"><div class="grid g2">
+    <label class="f"><span>Chọn công thức</span><select id="pick" onchange="loadP(this.value)"></select></label>
+    <div style="display:flex;align-items:flex-end"><button class="btn g" onclick="newP()">Thêm công thức mới</button></div>
+  </div></div></div>
+  <div class="card">
+    <div class="ch"><h2>Thông tin chung</h2></div>
+    <div class="cb"><div class="grid g3">
+      <label class="f"><span>Tên sản phẩm</span><input id="pName" placeholder="MOTOX 5EC"></label>
+      <label class="f"><span>Hiệu</span><input id="pBrand" placeholder="BAMM"></label>
+      <label class="f"><span>Dạng</span><select id="pForm" onchange="formChg()">
+        <option value="EC">EC — nhũ dầu</option><option value="SL">SL — dung dịch</option>
+        <option value="SC">SC — huyền phù</option><option value="SE">SE — huyền phù nhũ</option>
+        <option value="RB">RB — bả mồi (rắn)</option><option value="WP">WP — bột thấm (rắn)</option>
+        <option value="GR">GR — hạt (rắn)</option></select></label>
+      <label class="f"><span>Tỉ trọng chuẩn (kg/L)</span><input id="pDens" class="n" inputmode="decimal" placeholder="0.883"></label>
+      <label class="f"><span>Ngày hiệu lực</span><input id="pDate" type="date"></label>
+      <label class="f"><span>Độ chia cân (kg)</span><input id="pNotch" class="n" inputmode="decimal" value="0.1"></label>
+    </div>
+    <div id="dHint" class="note" style="margin-top:10px" hidden>Dạng rắn không dùng tỉ trọng. Hàm lượng đích tính theo g/kg hoặc % khối lượng.</div>
+  </div></div>
+  <div class="card">
+    <div class="ch"><h2>Thành phần</h2><span class="sub" id="pctS"></span></div>
+    <div class="cb">
+      <div class="tw"><table><thead><tr>
+        <th style="min-width:150px">Tên nguyên liệu</th><th style="min-width:112px">Vai trò</th>
+        <th class="n">%KL</th><th class="n">Assay DN</th><th class="n">Đích</th>
+        <th>Đơn vị</th><th class="n">Độ chia</th><th></th>
+      </tr></thead><tbody id="cBody"></tbody></table></div>
+      <div class="acts"><button class="btn g s" onclick="addC()">Thêm dòng</button></div>
+      <div class="note" style="margin-top:12px">
+        <b>Hoạt chất</b> — cần assay danh nghĩa và hàm lượng đích. Khi kiểm sẽ quy ngược ra g/L và bắt buộc ≥ đích.<br>
+        <b>Phụ gia</b> — kiểm theo %KL, dung sai ±0,5% tương đối hoặc 1 nấc cân, lấy cái lớn hơn.<br>
+        <b>Dung môi / nước</b> — biến bù, không kiểm riêng, chỉ kiểm tổng về đúng mốc.
+      </div>
+      <div class="acts">
+        <button class="btn" onclick="saveP()">Lưu công thức</button>
+        <button class="btn g" onclick="loadP(pid)">Hoàn tác</button>
+        <button class="btn d" onclick="delP()">Xóa</button>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="s2">
+  <div class="card">
+    <div class="ch"><h2>Phiếu sản xuất</h2><span class="sub" id="pInfo"></span></div>
+    <div class="cb">
+      <div class="grid g3">
+        <label class="f"><span>Sản phẩm</span><select id="cPick" onchange="buildC()"></select></label>
+        <label class="f"><span>Mẻ số</span><input id="iBatch" placeholder="115/2026"></label>
+        <label class="f"><span>CT áp dụng từ ngày</span><input id="iDate" type="date" onchange="run()"></label>
+        <label class="f"><span>Thể tích bồn (L)</span><input id="iVol" class="n" inputmode="decimal" oninput="run()"></label>
+        <label class="f"><span>Tổng kg in trên phiếu</span><input id="iTot" class="n" inputmode="decimal" oninput="run()"></label>
+        <label class="f"><span>Độ chia cân (kg)</span><input id="iNotch" class="n" inputmode="decimal" value="0.1" oninput="run()"></label>
+      </div>
+      <div class="note" style="margin-top:10px">Bỏ trống ô tổng kg thì mốc lấy bằng thể tích × tỉ trọng. Điền vào nếu phiếu in sẵn mốc riêng.</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><h2>Khối lượng nguyên liệu</h2><span class="sub">Điền assay và tồn kho từng lô trước</span></div>
+    <div class="cb">
+      <div id="rows"></div>
+      <div class="acts">
+        <button class="btn o" onclick="autoFill()">Tính hộ số chuẩn</button>
+        <button class="btn" onclick="run(1)">Kiểm tra</button>
+        <button class="btn g" onclick="saveRec()">Lưu kết quả</button>
+      </div>
+      <div class="note" style="margin-top:10px"><b>Tính hộ</b> điền sẵn khối lượng đúng theo chuẩn — dùng khi lập phiếu mới. <b>Kiểm tra</b> so số đã nhập với chuẩn.</div>
+    </div>
+  </div>
+  <div id="res"></div>
+  <div class="card">
+    <div class="ch"><h2>Lịch sử</h2><span class="sub" id="hCount"></span></div>
+    <div class="cb"><div id="hList"></div></div>
+  </div>
+</section>
+</main>
+<script>
+"use strict";
+const KEY="ktct2";
+const DB={
+ async get(){ if(window.storage){try{const r=await window.storage.get(KEY);return r&&r.value?JSON.parse(r.value):null}catch(e){}}
+   try{const v=localStorage.getItem(KEY);return v?JSON.parse(v):null}catch(e){return null} },
+ async set(o){ const s=JSON.stringify(o);
+   if(window.storage){try{await window.storage.set(KEY,s);return}catch(e){}}
+   try{localStorage.setItem(KEY,s)}catch(e){} }
+};
+const SEED={products:[],records:[]};
+let S={products:[],records:[]}, pid=null, dr=null, LOT={}, last=null;
+const $=i=>document.getElementById(i);
+const SOLID=["RB","WP","GR"], solid=f=>SOLID.indexOf(f)>=0;
+const N=v=>{const x=parseFloat(String(v==null?"":v).replace(",","."));return isFinite(x)?x:NaN};
+const F=(v,d)=>isFinite(v)?v.toLocaleString("vi-VN",{minimumFractionDigits:d,maximumFractionDigits:d}):"—";
+const E=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const nmz=s=>String(s==null?"":s).toLowerCase().replace(/[\s\-_.]/g,"");
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const dec=k=>k>=1?0:k>=0.1?1:k>=0.01?2:3;
+const snap=(v,k)=>+(Math.round(v/k)*k).toFixed(dec(k)+2);
+const dv=d=>d?d.split("-").reverse().join("/"):"";
+function toast(m){const t=document.createElement("div");t.className="toast";t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2600)}
+const save=()=>DB.set(S);
+const UL=u=>u==="gL"?"g/L":u==="gkg"?"g/kg":"% w/w";
+const DIV=(u,d)=>u==="gL"?1000*(d||0):u==="gkg"?1000:100;
+function notchUp(need,af,k){ if(!(af>0)||!(k>0))return NaN;
+  const b=snap(need/af,k); return b*af+1e-9>=need?b:+(b+k).toFixed(dec(k)+2) }
+function alloc(lots,need,k){ let rem=need;
+  return lots.map(L=>{ const af=N(L.a)/100;
+    if(!(af>0)||rem<=1e-9)return 0;
+    const want=notchUp(rem,af,k), st=N(L.s);
+    const kg=(isFinite(st)&&st>0)?Math.min(st,want):want;
+    rem=Math.max(0,rem-kg*af); return +kg.toFixed(dec(k)+2) }) }
+function go(v){$("s1").hidden=v!==1;$("s2").hidden=v!==2;
+  $("t1").setAttribute("aria-selected",v===1);$("t2").setAttribute("aria-selected",v===2);scrollTo(0,0)}
+function fillPick(){
+  const o=S.products.map(p=>`<option value="${p.id}">${E(p.name)}${p.brand?" ("+E(p.brand)+")":""}</option>`).join("");
+  $("pick").innerHTML=o||"<option value=''>— trống —</option>";
+  $("cPick").innerHTML=o||"<option value=''>— trống —</option>";
+}
+function formChg(){const s=solid($("pForm").value);$("dHint").hidden=!s;$("pDens").disabled=s;if(s)$("pDens").value=""}
+function renderC(){
+  $("cBody").innerHTML=dr.comps.map(function(c,i){const ai=c.r==="ai";return `<tr>
+    <td><input value="${E(c.n)}" oninput="sc(${i},'n',this.value)"></td>
+    <td><select onchange="sc(${i},'r',this.value);renderC()">
+      <option value="ai"${ai?" selected":""}>Hoạt chất</option>
+      <option value="add"${c.r==="add"?" selected":""}>Phụ gia</option>
+      <option value="fill"${c.r==="fill"?" selected":""}>Dung môi/nước</option></select></td>
+    <td class="n"><input class="n" inputmode="decimal" value="${c.p==null?"":c.p}" oninput="sc(${i},'p',this.value)"></td>
+    <td class="n">${ai?`<input class="n" inputmode="decimal" value="${c.a==null?"":c.a}" oninput="sc(${i},'a',this.value)">`:"—"}</td>
+    <td class="n">${ai?`<input class="n" inputmode="decimal" value="${c.t==null?"":c.t}" oninput="sc(${i},'t',this.value)">`:"—"}</td>
+    <td>${ai?`<select onchange="sc(${i},'u',this.value)">
+      <option value="gL"${c.u==="gL"?" selected":""}>g/L</option>
+      <option value="pct"${c.u==="pct"?" selected":""}>% w/w</option>
+      <option value="gkg"${c.u==="gkg"?" selected":""}>g/kg</option></select>`:"—"}</td>
+    <td class="n"><input class="n" inputmode="decimal" placeholder="mặc định" value="${c.k==null?"":c.k}" oninput="sc(${i},'k',this.value)"></td>
+    <td><button class="btn d s" onclick="delC(${i})">×</button></td></tr>`}).join("")
+    ||`<tr><td colspan="8" class="empty">Chưa có thành phần.</td></tr>`;
+  const s=dr.comps.reduce((a,c)=>a+(N(c.p)||0),0),ok=Math.abs(s-100)<.005;
+  $("pctS").innerHTML=`Tổng %KL: <b style="font-family:var(--mono);color:${ok?"var(--ok)":"var(--seal)"}">${F(s,2)}%</b>${ok?"":" — phải bằng 100"}`;
+}
+function sc(i,k,v){dr.comps[i][k]=(k==="n"||k==="r"||k==="u")?v:N(v);if(k==="p")renderC()}
+function addC(){dr.comps.push({n:"",r:"add",p:0,u:"gL"});renderC()}
+function delC(i){dr.comps.splice(i,1);renderC()}
+function loadP(id){
+  const p=S.products.find(x=>x.id===id)||S.products[0];
+  if(!p){newP();return}
+  pid=p.id;$("pick").value=p.id;dr=JSON.parse(JSON.stringify(p));
+  $("pName").value=p.name||"";$("pBrand").value=p.brand||"";$("pForm").value=p.form||"EC";
+  $("pDens").value=p.dens==null?"":p.dens;$("pDate").value=p.date||"";$("pNotch").value=p.notch==null?0.1:p.notch;
+  formChg();renderC();
+}
+function newP(){pid=null;dr={id:uid(),name:"",brand:"",form:"EC",dens:null,date:"",notch:0.1,comps:[]};
+  ["pName","pBrand","pDens","pDate"].forEach(k=>$(k).value="");$("pForm").value="EC";$("pNotch").value="0.1";
+  formChg();renderC();$("pName").focus()}
+async function saveP(){
+  const name=$("pName").value.trim();
+  if(!name){toast("Điền tên sản phẩm");return}
+  if(!dr.comps.length){toast("Chưa có thành phần nào");return}
+  const sd=solid($("pForm").value),d=N($("pDens").value);
+  if(!sd&&!(d>0)){toast("Dạng lỏng cần tỉ trọng");return}
+  const sum=dr.comps.reduce((a,c)=>a+(N(c.p)||0),0);
+  if(Math.abs(sum-100)>.005&&!confirm(`Tổng %KL là ${F(sum,2)}% chứ không phải 100. Vẫn lưu?`))return;
+  const bad=dr.comps.find(c=>c.r==="ai"&&!(N(c.a)>0&&N(c.t)>0));
+  if(bad){toast(`Hoạt chất "${bad.n||"?"}" thiếu assay hoặc đích`);return}
+  const p={id:dr.id,name:name,brand:$("pBrand").value.trim(),form:$("pForm").value,
+    dens:sd?null:d,date:$("pDate").value,notch:N($("pNotch").value)||0.1,
+    comps:dr.comps.map(function(c){const o={n:c.n.trim(),r:c.r,p:N(c.p)||0};
+      if(c.r==="ai"){o.a=N(c.a);o.t=N(c.t);o.u=c.u||"gL"}
+      if(N(c.k)>0)o.k=N(c.k);return o})};
+  const i=S.products.findIndex(x=>x.id===p.id);
+  if(i>=0)S.products[i]=p;else S.products.push(p);
+  await save();pid=p.id;fillPick();$("pick").value=p.id;loadP(p.id);buildC();toast("Đã lưu "+p.name);
+}
+async function delP(){
+  if(!pid){toast("Công thức chưa lưu");return}
+  const p=S.products.find(x=>x.id===pid);
+  if(!confirm(`Xóa "${p.name}"? Lịch sử đã lưu vẫn giữ số liệu cũ.`))return;
+  S.products=S.products.filter(x=>x.id!==pid);await save();fillPick();
+  if(S.products.length)loadP(S.products[0].id);else newP();
+  buildC();toast("Đã xóa");
+}
+function cur(){return S.products.find(p=>p.id===$("cPick").value)}
+function buildC(){
+  const p=cur(),b=$("rows");LOT={};
+  if(!p){b.innerHTML=`<div class="empty">Chưa có công thức. Mở tab <b>Công thức chuẩn</b> để thêm.</div>`;$("res").innerHTML="";$("pInfo").textContent="";return}
+  $("pInfo").innerHTML=`${E(p.form)} · ${p.dens?"d "+F(p.dens,3):"dạng rắn"} · hiệu lực <b>${dv(p.date)||"—"}</b>`;
+  $("iNotch").value=p.notch||0.1;
+  b.innerHTML=`<div class="tw"><table><thead><tr>
+    <th style="min-width:150px">Nguyên liệu</th><th style="min-width:126px">Tên ghi trên phiếu</th>
+    <th class="n" style="min-width:96px">kg</th><th class="n">%KL chuẩn</th></tr></thead><tbody>
+    ${p.comps.map(function(c,i){const ro=c.r==="ai";
+      return `<tr><td><b>${E(c.n)}</b>${ro?`<div id="L${i}"></div>`:""}
+        <div style="font-size:10px;color:var(--ink3)">${c.r==="ai"?"Hoạt chất · đích "+F(c.t,2)+" "+UL(c.u):c.r==="add"?"Phụ gia":"Biến bù"}</div></td>
+      <td><input id="nm${i}" value="${E(c.n)}" oninput="run()"></td>
+      <td class="n">${ro?`<input class="n" id="kg${i}" readonly>`:`<input class="n" id="kg${i}" inputmode="decimal" oninput="run()">`}</td>
+      <td class="n">${F(c.p,2)}%</td></tr>`}).join("")}
+    </tbody></table></div>`;
+  p.comps.forEach(function(c,i){if(c.r==="ai")drawLots(i)});
+  run();
+}
+function drawLots(i){
+  const p=cur(),c=p.comps[i];
+  if(!LOT[i]||!LOT[i].length)LOT[i]=[{d:"",a:"",s:"",kg:""}];
+  $("L"+i).innerHTML=`<div class="lots">
+    ${LOT[i].map(function(L,j){return `<div class="lot">
+      <label class="f"><span>Số lô / date</span><input value="${E(L.d)}" placeholder="D05/08/2025" oninput="sl(${i},${j},'d',this.value)"></label>
+      <label class="f"><span>Assay %</span><input class="n" inputmode="decimal" value="${E(L.a)}" placeholder="${c.a==null?"":c.a}" oninput="sl(${i},${j},'a',this.value)"></label>
+      <label class="f"><span>Tồn kho kg</span><input class="n" inputmode="decimal" value="${E(L.s)}" placeholder="lô bù" oninput="sl(${i},${j},'s',this.value)"></label>
+      <label class="f"><span>Cân kg</span><input class="n" inputmode="decimal" value="${E(L.kg)}" oninput="sl(${i},${j},'kg',this.value)"></label>
+      <button class="x" onclick="dl(${i},${j})" ${LOT[i].length<2?"disabled style='opacity:.3'":""}>×</button>
+    </div>`}).join("")}
+    <div class="lf"><button class="btn g s" onclick="al(${i})">Thêm lô</button>
+      <span>Tổng <b id="ls${i}">—</b> kg</span><span>Bình quân <b id="la${i}">—</b></span></div></div>`;
+  sync(i);
+}
+function sl(i,j,k,v){LOT[i][j][k]=v;sync(i);run()}
+function al(i){LOT[i].push({d:"",a:"",s:"",kg:""});drawLots(i);run()}
+function dl(i,j){if(LOT[i].length<2)return;LOT[i].splice(j,1);drawLots(i);run()}
+function sync(i){
+  const c=cur().comps[i];let kg=0,ai=0,any=false;
+  LOT[i].forEach(function(L){const k=N(L.kg),a=N(L.a)||c.a;if(k>0){kg+=k;ai+=k*a/100;any=true}});
+  $("kg"+i).value=any?F(kg,3):"";
+  $("ls"+i).textContent=any?F(kg,3):"—";
+  $("la"+i).textContent=any&&kg>0?F(ai/kg*100,2)+"%":"—";
+}
+function anchor(){
+  const p=cur(),t=N($("iTot").value),v=N($("iVol").value);
+  return (isFinite(t)&&t>0)?t:((isFinite(v)&&v>0&&p&&p.dens)?v*p.dens:NaN);
+}
+function autoFill(){
+  const p=cur();if(!p)return;
+  const A=anchor(),k=N($("iNotch").value)||0.1;
+  if(!(A>0)){toast("Nhập thể tích bồn hoặc tổng kg trước");return}
+  const miss=[];
+  p.comps.forEach(function(c,i){
+    const kk=c.k||k;
+    if(c.r==="ai"){
+      const need=c.t/DIV(c.u,p.dens)*A, lots=LOT[i]||[];
+      const use=lots.map(L=>({a:N(L.a)||c.a,s:L.s}));
+      if(!use.some(L=>L.a>0)){miss.push(c.n+" — chưa có assay");return}
+      const got=alloc(use,need,kk);
+      got.forEach(function(g,j){LOT[i][j].kg=g>0?String(g):""});
+      drawLots(i);
+      const gotAi=got.reduce((a,b,j)=>a+b*use[j].a/100,0);
+      if(gotAi+1e-9<need)miss.push(c.n+" — thiếu "+F(need-gotAi,3)+" kg a.i.");
+    }else if(c.r==="add"){
+      $("kg"+i).value=F(snap(c.p/100*A,kk),dec(kk));
+    }
+  });
+  const oth=p.comps.reduce(function(a,c,i){return a+(c.r==="fill"?0:(N(($("kg"+i)||{}).value)||0))},0);
+  p.comps.forEach(function(c,i){const kk=c.k||k;
+    if(c.r==="fill")$("kg"+i).value=F(snap(A-oth,kk),dec(kk))});
+  run();
+  toast(miss.length?"Đã tính. Cần xem: "+miss.join("; "):"Đã điền số chuẩn");
+}
+function band(a,lo,hi,mid){
+  const sp=Math.max(hi-lo,1e-9),x0=lo-sp*.9,x1=hi+sp*.9;
+  const P=v=>Math.max(0,Math.min(100,(v-x0)/(x1-x0)*100));
+  const ins=a>=lo-1e-9&&a<=hi+1e-9;
+  return `<div class="band"><i></i><u style="left:${P(lo)}%;width:${P(hi)-P(lo)}%"></u>
+    ${mid!=null?`<b style="background:var(--ink3);width:1px;left:${P(mid)}%"></b>`:""}
+    <b class="${ins?"in":"out"}" style="left:calc(${P(a)}% - 1px)"></b></div>`;
+}
+function run(sc){
+  const p=cur();if(!p)return;
+  const k=N($("iNotch").value)||0.1, A=anchor(), issues=[];
+  let worst=0; const M=function(l){if(l>worst)worst=l};
+  p.comps.forEach(function(c,i){const e=$("nm"+i);if(!e)return;const t=e.value.trim();
+    if(t&&nmz(t)!==nmz(c.n)){M(1);issues.push(`Tên dòng ${i+1}: phiếu ghi <b>${E(t)}</b>, chuẩn là <b>${E(c.n)}</b>`)}});
+  const di=$("iDate").value,ds=p.date;let dl=0,dt="Chưa nhập ngày trên phiếu";
+  if(di&&ds){ if(di===ds)dt="Khớp ngày hiệu lực";
+    else if(di<ds){dl=2;dt=`Phiếu ghi ${dv(di)} — trước ngày công thức có hiệu lực (${dv(ds)})`}
+    else{dl=1;dt=`Phiếu ghi ${dv(di)}, chuẩn hiệu lực từ ${dv(ds)} — kiểm xem có bản mới hơn không`} }
+  else dl=1; M(dl);
+  let aNote="";
+  const tIn=N($("iTot").value),vIn=N($("iVol").value);
+  if(isFinite(vIn)&&vIn>0&&p.dens&&isFinite(tIn)&&tIn>0){
+    const calc=vIn*p.dens,d=tIn-calc,tol=Math.max(k,calc*0.0005);
+    aNote=`Thể tích × tỉ trọng = <b>${F(calc,3)}</b> kg, phiếu in <b>${F(tIn,3)}</b> (chênh ${d>=0?"+":""}${F(d,3)})`;
+    if(Math.abs(d)>tol){M(1);issues.push("Mốc in trên phiếu lệch khỏi thể tích × tỉ trọng quá 1 nấc — có thể là mốc kế thừa từ mẻ cũ")}
+  }
+  const got=p.comps.map(function(c,i){
+    if(c.r==="ai"){let kg=0,ai=0;const ls=[];
+      (LOT[i]||[]).forEach(function(L){const q=N(L.kg),a=N(L.a)||c.a;if(q>0){kg+=q;ai+=q*a/100;ls.push({a:a,kg:q})}});
+      return {kg:kg||NaN,ai:ai,ls:ls}}
+    return {kg:N(($("kg"+i)||{}).value),ls:[]}});
+  const sum=got.reduce((a,g)=>a+(isFinite(g.kg)?g.kg:0),0);
+  const all=got.every(g=>isFinite(g.kg)&&g.kg>0);
+  const rows=p.comps.map(function(c,i){
+    const g=got[i],has=isFinite(g.kg)&&g.kg>0,kk=c.k||k;
+    if(c.r==="ai"){
+      const D=DIV(c.u,p.dens),ct=has&&A>0?g.ai/A*D:NaN,lo=c.t,hi=c.t*1.06;
+      let l=0,nt="";
+      if(!has){l=1;nt="Chưa nhập lô"} else if(!(A>0)){l=1;nt="Chưa có mốc"}
+      else if(ct<lo-1e-9){l=2;nt="Hụt dưới đích"} else if(ct>hi){l=1;nt="Vượt +6%"}
+      M(l);
+      let sug="";
+      if(l===2&&A>0&&g.ls.length){
+        const need=c.t*A/D,lastL=g.ls[g.ls.length-1];
+        const oth=g.ls.slice(0,-1).reduce((a,L)=>a+L.kg*L.a/100,0), r2=need-oth;
+        if(r2>0){const q=notchUp(r2,lastL.a/100,kk);
+          sug=`Lô cuối phải là <b>${F(q,3)}</b> kg → tổng ${F(g.kg-lastL.kg+q,3)} kg`}
+        else sug=`Thiếu <b>${F(need-g.ai,3)}</b> kg hoạt chất — cần thêm lô`;
+      }
+      return {l:l,n:c.n,note:nt||(g.ls.length>1?"Gộp "+g.ls.length+" lô":""),sug:sug,
+        cells:[F(g.kg,3),F(ct,3)+" "+UL(c.u),"≥ "+F(lo,2),has&&g.kg>0?F(g.ai/g.kg*100,2)+"%":"—",
+               band(isFinite(ct)?ct:lo,lo,hi,null)]};
+    }
+    if(c.r==="add"){
+      const ex=A>0?c.p/100*A:NaN,tol=Math.max(kk,Math.abs(ex)*0.005),d=has?g.kg-ex:NaN;
+      let l=0,nt="";
+      if(!has){l=1;nt="Chưa nhập"} else if(!(A>0)){l=1;nt="Chưa có mốc"}
+      else if(Math.abs(d)>tol){l=1;nt=(d>0?"Dư ":"Thiếu ")+F(Math.abs(d),3)+" kg"}
+      M(l);
+      return {l:l,n:c.n,note:nt,sug:(l===1&&has&&A>0)?`Đúng phải là <b>${F(snap(ex,kk),dec(kk))}</b> kg`:"",
+        cells:[F(g.kg,3),F(ex,3),"± "+F(tol,3),isFinite(d)?(d>=0?"+":"")+F(d/ex*100,3)+"%":"—",
+               band(isFinite(g.kg)?g.kg:ex,ex-tol,ex+tol,ex)]};
+    }
+    const ex=A>0?A-p.comps.reduce(function(a,cc,j){return a+(cc.r==="fill"?0:(isFinite(got[j].kg)?got[j].kg:0))},0):NaN;
+    const d=has?g.kg-ex:NaN;let l=0,nt="Biến bù — chỉ kiểm tổng";
+    if(!has){l=1;nt="Chưa nhập"} else if(isFinite(ex)&&Math.abs(d)>kk*1.5){l=1;nt="Số bù không khớp"}
+    M(l);
+    return {l:l,n:c.n,note:nt,sug:(l===1&&isFinite(ex))?`Số bù đúng là <b>${F(snap(ex,kk),dec(kk))}</b> kg`:"",
+      cells:[F(g.kg,3),F(ex,3),"± "+F(kk*1.5,3),isFinite(d)?(d>=0?"+":"")+F(d,3):"—",
+             (isFinite(ex)&&isFinite(g.kg))?band(g.kg,ex-kk*1.5,ex+kk*1.5,ex):""]};
+  });
+  let tl=0,tt="Chưa đủ số liệu";
+  if(all&&A>0){const d=sum-A,tol=Math.max(k,A*0.0002);
+    tt=`Cộng cột kg = <b>${F(sum,3)}</b> · mốc <b>${F(A,3)}</b> · chênh <b>${d>=0?"+":""}${F(d,3)}</b> kg`;
+    if(Math.abs(d)>tol){tl=2;issues.push("Tổng cân không về đúng mốc")}M(tl)}
+  else{tl=1;M(1)}
+  last={A:A,sum:sum,rows:rows,worst:worst,dt:dt,dl:dl,tt:tt,tl:tl,aNote:aNote,issues:issues,k:k,vIn:vIn,tIn:tIn};
+  paint();if(sc)$("res").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function paint(){
+  const R=last,vc=["vok","vwa","ver"][R.worst],vt=["ĐẠT","CẢNH BÁO","LỖI"][R.worst];
+  const vw=["Công thức khớp chuẩn trong dung sai.","Có sai lệch ngoài dung sai nhưng hoạt chất vẫn đủ.",
+    "Hoạt chất hụt dưới đích hoặc tổng không cân. Phải sửa trước khi lên thuốc."][R.worst];
+  const C=l=>`<span class="chip ${["cok","cwa","cer"][l]}">${["ĐẠT","CẢNH BÁO","LỖI"][l]}</span>`;
+  $("res").innerHTML=`<div class="card">
+   <div class="ch"><h2>Kết quả</h2><span class="sub">Phụ gia ±0,5% · hoạt chất ≥ đích, trần +6%</span></div>
+   <div class="cb">
+    <div class="vd ${vc}"><div class="b">${vt}</div><div>${vw}</div></div>
+    <div class="sl"><span>Mốc <b>${F(R.A,3)}</b> kg</span><span>Độ chia <b>${F(R.k,3)}</b> kg</span>${R.aNote?`<span>${R.aNote}</span>`:""}</div>
+    <div class="tw" style="margin-top:14px"><table><thead><tr>
+      <th style="min-width:126px">Nguyên liệu</th><th class="n">Phiếu</th><th class="n">Chuẩn</th>
+      <th class="n">Dải</th><th class="n">Chênh</th><th style="min-width:96px">Dung sai</th><th>Kết luận</th>
+    </tr></thead><tbody>${R.rows.map(r=>`<tr>
+      <td><b>${E(r.n)}</b>${r.note?`<div style="font-size:11px;color:var(--ink3)">${E(r.note)}</div>`:""}</td>
+      <td class="n">${r.cells[0]}</td><td class="n">${r.cells[1]}</td><td class="n">${r.cells[2]}</td>
+      <td class="n">${r.cells[3]}</td><td>${r.cells[4]}</td>
+      <td>${C(r.l)}${r.sug?`<div style="font-size:11px;margin-top:3px">${r.sug}</div>`:""}</td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="note ${R.dl===2?"e":(R.dl===1?"w":"")}"><b>Ngày hiệu lực</b> — ${R.dt}</div>
+      <div class="note ${R.tl===2?"e":(R.tl===1?"w":"")}"><b>Cân bằng</b> — ${R.tt}</div></div>
+    ${R.issues.length?`<div class="note w" style="margin-top:10px"><b>Điểm cần xem</b><ul style="margin:5px 0 0;padding-left:17px">${R.issues.map(x=>`<li>${x}</li>`).join("")}</ul></div>`:""}
+   </div></div>`;
+}
+async function saveRec(){
+  const p=cur();if(!p||!last){toast("Bấm Kiểm tra trước");return}
+  S.records.unshift({id:uid(),at:new Date().toISOString(),name:p.name,batch:$("iBatch").value.trim(),
+    ctDate:$("iDate").value,verdict:["ĐẠT","CẢNH BÁO","LỖI"][last.worst],
+    snap:JSON.parse(JSON.stringify(p)),
+    input:{vol:last.vIn,tot:last.tIn,notch:last.k,lots:JSON.parse(JSON.stringify(LOT)),
+      kg:p.comps.map(function(c,i){return {n:c.n,kg:N(($("kg"+i)||{}).value)}})},
+    result:{A:last.A,sum:last.sum,rows:last.rows.map(r=>({n:r.n,l:r.l,note:r.note}))}});
+  if(S.records.length>300)S.records.length=300;
+  await save();hist();toast("Đã lưu kèm bản chụp công thức");
+}
+function hist(){
+  $("hCount").textContent=S.records.length+" bản ghi";
+  $("hList").innerHTML=S.records.length?S.records.slice(0,25).map(function(r){
+    const c=r.verdict==="ĐẠT"?"cok":(r.verdict==="CẢNH BÁO"?"cwa":"cer");
+    return `<div class="hi"><div><b>${E(r.name)}</b>${r.batch?" · mẻ "+E(r.batch):""}
+      <div style="font-size:12px;color:var(--ink3)">${new Date(r.at).toLocaleString("vi-VN")}${r.ctDate?" · CT "+dv(r.ctDate):""} · ${r.snap.comps.length} thành phần</div></div>
+      <div style="display:flex;gap:7px;align-items:center"><span class="chip ${c}">${E(r.verdict)}</span>
+      <button class="btn d s" onclick="delRec('${r.id}')">Xóa</button></div></div>`}).join("")
+    :`<div class="empty">Chưa có bản ghi. Bấm <b>Lưu kết quả</b> sau khi kiểm.</div>`;
+}
+async function delRec(id){S.records=S.records.filter(r=>r.id!==id);await save();hist()}
+function expJSON(){
+  const b=new Blob([JSON.stringify({app:"kiem-cong-thuc",v:2,at:new Date().toISOString(),data:S},null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(b);
+  a.download="cong-thuc-"+new Date().toISOString().slice(0,10)+".json";a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);toast("Đã tải file về máy");
+}
+function impJSON(el){
+  const f=el.files&&el.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=async function(){try{
+    const j=JSON.parse(r.result),d=(j&&j.data)?j.data:j;
+    if(!d||!Array.isArray(d.products))throw 0;
+    const m=S.products.length?prompt("Gõ THAY để thay toàn bộ, GOP để gộp thêm:","GOP"):"THAY";
+    if(m==null){el.value="";return}
+    if(String(m).toUpperCase().indexOf("THAY")>=0)S={products:d.products,records:d.records||[]};
+    else{const h={};S.products.forEach(p=>h[nmz(p.name)]=1);
+      d.products.forEach(function(p){if(!h[nmz(p.name)])S.products.push(p)});
+      if(Array.isArray(d.records))S.records=d.records.concat(S.records)}
+    await save();fillPick();loadP(S.products[0]&&S.products[0].id);buildC();hist();
+    toast("Đã nạp "+d.products.length+" công thức");
+  }catch(e){toast("File không đọc được")}el.value=""};
+  r.readAsText(f);
+}
+(async function(){
+  const sv=await DB.get();
+  S=(sv&&Array.isArray(sv.products)&&sv.products.length)?sv:JSON.parse(JSON.stringify(SEED));
+  if(!Array.isArray(S.records))S.records=[];
+  if(!sv)await save();
+  fillPick();loadP(S.products[0]&&S.products[0].id);
+  $("cPick").value=S.products[0]?S.products[0].id:"";
+  buildC();hist();go(2);
+})();
+if("serviceWorker" in navigator){
+  window.addEventListener("load",function(){
+    navigator.serviceWorker.register("./sw.js").catch(function(){});
+  });
+}
+</script>
+</body>
+</html>
